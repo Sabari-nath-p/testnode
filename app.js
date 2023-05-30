@@ -59,6 +59,41 @@ app.get('/documents', async (req, res) => {
   }
 });
 
+// Define your API routes and handlers
+app.get('/body', async (req, res) => {
+  try {
+    // Get the value to match from the query parameter
+    const matchValue = req.query.match;
+    const matchField = req.query.field;
+    // Check if the query parameter is provided
+    if (!matchValue) {
+      // If the parameter is not provided, return an error response
+      res.status(400).json({ error: 'Match value is missing' });
+      return;
+    }
+
+    // Query the Firestore database for documents that match the specified value
+    const querySnapshot = await db.collection('contents').where(matchField, '==', matchValue).get();
+
+    // Check if any documents match the query
+    if (querySnapshot.empty) {
+      res.status(404).json({ error: 'No documents found' });
+      return;
+    }
+
+    // Retrieve the matched documents' data
+    const documentsData = querySnapshot.docs.map(doc => doc.data());
+
+    res.json(documentsData);
+  } catch (error) {
+    console.error('Error retrieving documents:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
