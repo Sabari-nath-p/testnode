@@ -27,6 +27,7 @@ app.get('/', async (req, res) => {
 
 
 
+
 app.get('/documents', async (req, res) => {
   try {
     // Get the optional query parameter
@@ -87,6 +88,27 @@ app.get('/body', async (req, res) => {
     res.json(documentsData);
   } catch (error) {
     console.error('Error retrieving documents:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+// Define your API routes and handlers
+app.post('/upload/documentId', async (req, res) => {
+  try {
+    // Get the document ID from the request parameters
+    const documentId = req.params.documentId;
+
+    // Get the data from the request body
+    const data = req.body;
+
+    // Add the data to the Firestore collection with the specified document ID
+    const documentRef = db.collection('your-collection').doc(documentId);
+    await documentRef.set(data);
+
+    res.json({ message: 'Document added successfully' });
+  } catch (error) {
+    console.error('Error adding document:', error);
     res.status(500).send('Internal Server Error');
   }
 });
