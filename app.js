@@ -94,7 +94,7 @@ app.get('/body', async (req, res) => {
 
 
 // Define your API routes and handlers
-app.post('/upload', async (req, res) => {
+app.post('/upload/:collection/:documentId', async (req, res) => {
   try {
     // Get the document ID from the request parameters
     const documentId = req.params.documentId;
