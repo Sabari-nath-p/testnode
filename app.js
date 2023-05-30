@@ -25,6 +25,40 @@ app.get('/', async (req, res) => {
   }
 });
 
+
+
+app.get('/documents', async (req, res) => {
+  try {
+    // Get the optional query parameter
+    const documentId = req.query.id;
+
+    // Check if the query parameter is provided
+    if (!documentId) {
+      // If the parameter is not provided, return an error response
+      res.status(400).json({ error: 'Document ID is missing' });
+      return;
+    }
+
+    // Query the Firestore database for the specified document
+    const documentRef = db.collection('your-collection').doc(documentId);
+    const documentSnapshot = await documentRef.get();
+
+    // Check if the document exists
+    if (!documentSnapshot.exists) {
+      res.status(404).json({ error: 'Document not found' });
+      return;
+    }
+
+    // Retrieve the document data
+    const documentData = documentSnapshot.data();
+
+    res.json(documentData);
+  } catch (error) {
+    console.error('Error retrieving document:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
