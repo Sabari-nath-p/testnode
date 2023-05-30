@@ -1,0 +1,6 @@
+services:
+  - name: api
+    env:
+      - key: PORT
+        value: "8080"
+    startCommand: npm start
