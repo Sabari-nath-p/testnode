@@ -94,19 +94,20 @@ app.get('/body', async (req, res) => {
 
 
 // Define your API routes and handlers
-app.post('/upload/documentId', async (req, res) => {
+app.post('/upload', async (req, res) => {
   try {
     // Get the document ID from the request parameters
     const documentId = req.params.documentId;
+    const collection = req.params.collection;
 
     // Get the data from the request body
     const data = req.body;
 
     // Add the data to the Firestore collection with the specified document ID
-    const documentRef = db.collection('your-collection').doc(documentId);
+    const documentRef = db.collection(collection).doc(documentId);
     await documentRef.set(data);
 
-    res.json({ message: 'Document added successfully' });
+    res.json({ message: 'sucess' });
   } catch (error) {
     console.error('Error adding document:', error);
     res.status(500).send('Internal Server Error');
