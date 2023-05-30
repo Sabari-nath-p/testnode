@@ -40,7 +40,7 @@ app.get('/documents', async (req, res) => {
     }
 
     // Query the Firestore database for the specified document
-    const documentRef = db.collection('your-collection').doc(documentId);
+    const documentRef = db.collection('contents').doc(documentId);
     const documentSnapshot = await documentRef.get();
 
     // Check if the document exists
