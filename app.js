@@ -105,7 +105,7 @@ app.post('/upload/:collection/:documentId', async (req, res) => {
 
     // Add the data to the Firestore collection with the specified document ID
     const documentRef = db.collection(collection).doc(documentId);
-    await documentRef.set(JSON.parse(JSON.stringify(data)));
+    await documentRef.set(JSON.stringify(data));
 
     res.json({ message: 'sucess' });
   } catch (error) {
