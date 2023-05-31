@@ -10,7 +10,7 @@ admin.initializeApp({
 
 // Get a reference to the Firestore database
 const db = admin.firestore();
-
+app.use(express.json()); 
 // Define your API routes and handlers
 app.get('/', async (req, res) => {
   try {
