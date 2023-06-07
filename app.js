@@ -13,9 +13,10 @@ const db = admin.firestore();
 app.use(express.json()); 
 // Define your API routes and handlers
 app.get('/', async (req, res) => {
+   const collection = req.query.collection
   try {
     // Query the Firestore database
-    const snapshot = await db.collection('contents').get();
+    const snapshot = await db.collection(collection).get();
     const data = snapshot.docs.map(doc => doc.data());
 
     res.json(data);
@@ -32,6 +33,7 @@ app.get('/documents', async (req, res) => {
   try {
     // Get the optional query parameter
     const documentId = req.query.id;
+    const collection = req.query.collection
 
     // Check if the query parameter is provided
     if (!documentId) {
@@ -41,7 +43,7 @@ app.get('/documents', async (req, res) => {
     }
 
     // Query the Firestore database for the specified document
-    const documentRef = db.collection('contents').doc(documentId);
+    const documentRef = db.collection(collection).doc(documentId);
     const documentSnapshot = await documentRef.get();
 
     // Check if the document exists
@@ -62,6 +64,7 @@ app.get('/documents', async (req, res) => {
 
 // Define your API routes and handlers
 app.get('/body', async (req, res) => {
+   const collection = req.query.collection
   try {
     // Get the value to match from the query parameter
     const matchValue = req.query.match;
@@ -74,7 +77,7 @@ app.get('/body', async (req, res) => {
     }
 
     // Query the Firestore database for documents that match the specified value
-    const querySnapshot = await db.collection('contents').where(matchField, '==', matchValue).get();
+    const querySnapshot = await db.collection(collection).where(matchField, '==', matchValue).get();
 
     // Check if any documents match the query
     if (querySnapshot.empty) {
